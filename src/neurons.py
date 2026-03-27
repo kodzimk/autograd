@@ -1,24 +1,20 @@
 import random
 import math
-from scalar import Value
+import torch
 
 
 class Neuron:
+        
+    def __init__(self, nin):
+        self.w = [torch.tensor(random.uniform(-1,1), requires_grad=True) for _ in range(nin)]
+        self.b = torch.tensor(random.uniform(-1.0,1.0), requires_grad=True)
 
-    def __init__(self, nin, nonlin=True):
-        self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]
-        self.b = Value(0)
-        self.nonlin = nonlin
+    def parameters(self):
+        return self.w
 
     def __call__(self, x):
         act = sum((wi*xi for wi,xi in zip(self.w, x)), self.b)
-        return act.sigmoid() if self.nonlin else act
-
-    def parameters(self):
-        return self.w + [self.b]
-
-    def __repr__(self):
-        return f"{'ReLU' if self.nonlin else 'Linear'}Neuron({len(self.w)})"
+        return torch.tanh(act)
 
 class Layer:
 

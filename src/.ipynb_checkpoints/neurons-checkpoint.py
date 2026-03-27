@@ -2,7 +2,6 @@ import random
 import math
 from scalar import Value
 
-
 class Neuron:
 
     def __init__(self, nin, nonlin=True):
